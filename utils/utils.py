@@ -1,6 +1,7 @@
 import joblib
 import os
 import tempfile
+import yaml
 
 import numpy as np
 
@@ -12,3 +13,8 @@ def rf_model_size_mb(model):
         joblib.dump(model, rf_file, compress=0)
         rf_size = np.round(os.path.getsize(rf_file) / 1024 / 1024, 4)
         return rf_size
+
+# load project configuration file
+def load_config(config_file):
+    with open(config_file, 'r') as f:
+        return yaml.safe_load(f)
