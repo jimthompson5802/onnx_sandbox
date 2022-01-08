@@ -18,7 +18,7 @@ if __name__ == '__main__':
     array = da.ones((10000, 1000, 1000), chunks=100)
     print(array.mean().compute())  # Should print 1.0
 
-    df = dd.read_parquet(os.path.join(DATA_DIR,'training', 'training.parquet'))
+    df = dd.read_parquet(os.path.join(DATA_DIR,'benchark', 'train_full.parquet'))
     print(df.shape, len(df))
     print(df.columns)
     print(df.head())

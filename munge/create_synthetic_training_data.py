@@ -28,7 +28,7 @@ df = pd.DataFrame(np.hstack([cnty_id, X, y.reshape(-1, 1)]))
 df.columns = ['county'] + [f'X_{n:02}' for n in range(NUMBER_FEATURES)] + ['y']
 
 # save to storage
-training_dir = os.path.join(DATA_DIR, 'training')
+training_dir = os.path.join(DATA_DIR, 'benchark')
 os.makedirs(training_dir, exist_ok=True)
 
 # save sample of data as csv
@@ -36,6 +36,6 @@ df.sample(10, random_state=RANDOM_SEED)\
     .to_csv(os.path.join(training_dir, "train_sample.csv"), index=False)
 
 # save full data set
-df.to_parquet(os.path.join(training_dir, 'training.parquet'), index=False)
+df.to_parquet(os.path.join(training_dir, 'train_full.parquet'), index=False)
 
 print('all done')
