@@ -6,13 +6,15 @@ import os
 import shutil
 import yaml
 import pickle
-import sys
+from multiprocessing import freeze_support
 
 import pandas as pd
-import numpy as np
+
+import dask
+from dask.distributed import LocalCluster, Client
 
 from sklearn.ensemble import RandomForestRegressor
-from skl2onnx import to_onnx, convert_sklearn
+from skl2onnx import convert_sklearn
 from skl2onnx.common.data_types import FloatTensorType
 
 
@@ -37,32 +39,53 @@ def train_a_model(county_id: str) -> None:
     X = train_county.drop(['county', 'y'], axis='columns')
     y = train_county['y']
 
-    rf = RandomForestRegressor(random_state=config['random_seed'])
+    rf = RandomForestRegressor(n_jobs=4, random_state=config['random_seed'])
     rf.fit(X, y)
-    print(f'RF fit() complete for {county_id}')
+    # print(f'RF fit() complete for {county_id}')
 
     # save model as pickle file
     with open(os.path.join(models_test_dir, county_id+'.pkl'), 'wb') as f:
         pickle.dump(rf, f)
-    print(f"complete rf sklearn save for {county_id}")
+    # print(f"complete rf sklearn save for {county_id}")
 
     # save model as onnx
     explanatory_var = [('float_input', FloatTensorType([None, 20]))]
     onnx_model = convert_sklearn(rf, initial_types=explanatory_var)
     with open(os.path.join(models_test_dir, county_id+'.onnx'), 'wb') as f:
         f.write(onnx_model.SerializeToString())
-    print(f'complete rf onnx save for {county_id}')
+    # print(f'complete rf onnx save for {county_id}')
 
     print(f"completed training for {county_id}")
 
-def main():
-    # retrieve one county data to train
-    for county_id in ['cnty0000', 'cnty0001', 'cnty0002']:
-        train_a_model(county_id)
+    return {county_id: "OK"}
+
 
 if __name__ == '__main__':
-    main()
-    print('all done')
+    freeze_support()
+
+    # get list of counties from training data set
+    df = pd.read_parquet(os.path.join(DATA_DIR, 'benchmark', 'train.parquet'))
+    county_list = df['county'].unique().tolist()
+    del df
+
+    # setup dask cluster
+    cluster = LocalCluster(n_workers=3)
+    client = Client(cluster)
+    print(client.dashboard_link)
+
+    # kick off training
+    future_status = []
+    for county_id in county_list:
+        status = client.submit(train_a_model, county_id)
+        future_status.append(status)
+
+    # wait for all training to complete
+    results = client.gather(future_status)
+
+    print(results)
+
+    client.close()
+    cluster.close()
 
 
 
