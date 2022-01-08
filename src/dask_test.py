@@ -1,8 +1,12 @@
+import os
+
+import pandas as pd
 from multiprocessing import freeze_support
 from dask.distributed import Client, LocalCluster
 import dask.array as da
+import dask.dataframe as dd
 
-
+DATA_DIR = '../data'
 
 if __name__ == '__main__':
     freeze_support()
@@ -12,5 +16,10 @@ if __name__ == '__main__':
 
     array = da.ones((10000, 1000, 1000), chunks=100)
     print(array.mean().compute())  # Should print 1.0
+
+    df = dd.read_parquet(os.path.join(DATA_DIR,'training', 'training.parquet'))
+    print(df.shape, len(df))
+    print(df.columns)
+    print(df.head())
 
     print('all done')
