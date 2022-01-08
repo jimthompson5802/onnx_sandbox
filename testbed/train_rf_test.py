@@ -33,7 +33,7 @@ train_county = train_all_df.loc[train_all_df['county'] == county_id]
 X = train_county.drop(['county', 'y'], axis='columns')
 y = train_county['y']
 
-rf = RandomForestRegressor()
+rf = RandomForestRegressor(random_state=config['random_seed'])
 rf.fit(X, y)
 print(f'sys.getsizeof {sys.getsizeof(rf)} bytes')
 print(f'Estimated size of rf object in memory: {rf_model_size_mb(rf)} MB')
