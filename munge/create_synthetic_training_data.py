@@ -34,6 +34,8 @@ X, y = make_regression(NUMBER_RECORDS, NUMBER_FEATURES,
 # combine into a data frame
 df = pd.DataFrame(np.hstack([cnty_id, X, y.reshape(-1, 1)]))
 df.columns = ['county'] + [f'X_{n:02}' for n in range(NUMBER_FEATURES)] + ['y']
+df = df.astype({f'X_{n:02}': 'float32' for n in range(NUMBER_FEATURES)})
+df = df.astype({'y': 'float32'})
 
 # setup up benchmark data directory
 benchmark_data_dir = os.path.join(DATA_DIR, 'benchmark')
