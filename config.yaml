@@ -1,0 +1,24 @@
+# Configuration for setting up and running the benchmarks
+
+# data directory
+data_dir: /Users/jim/Desktop/onnx_sandbox/data
+
+# model storage directory
+model_dir: /Users/jim/Desktop/onnx_sandbox/models
+
+# synthetic data setup parameters for make_regression()
+# total number records
+number_records: 100000
+# total number of explanatory variables
+number_features: 20
+# number of informative explanatory variables
+number_informative: 14
+
+# fraction for test set
+fraction_for_test: 0.2
+
+# number of simulated counties to embed in the synthetic data
+number_counties: 20
+
+# Seed for random operations
+random_seed: 123
