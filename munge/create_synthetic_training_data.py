@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 
 
 #  get configuration
-with open('../config.yaml', 'r') as f:
+with open('config.yaml', 'r') as f:
     config  = yaml.safe_load(f)
 
 DATA_DIR = config['data_dir']

@@ -12,3 +12,5 @@ File `config.yaml` contains benchmark setup configuration parameters
 |munge|Code to create training and test data sets|
 |setup|Software configuration for this project|
 |testbed|Prototype programs for various functions used in this project.|
+
+Note: All programs assume CWD is project root directory.
