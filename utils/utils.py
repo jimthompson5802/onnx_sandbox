@@ -32,6 +32,11 @@ def actualsize_mb(input_obj):
         objects = gc.get_referents(*new)
     return np.round(memory_size / 1024 / 1024, 4)
 
+# get file size in MB
+def get_file_size_mb(fp: str) -> np.float:
+    return np.round(os.path.getsize(fp)/1024/1024, 4)
+
+
 # load project configuration file
 def load_config(config_file):
     with open(config_file, 'r') as f:
