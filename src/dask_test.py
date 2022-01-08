@@ -8,6 +8,7 @@ import dask.dataframe as dd
 
 DATA_DIR = '../data'
 
+
 if __name__ == '__main__':
     freeze_support()
     cluster = LocalCluster(n_workers=4)
@@ -21,5 +22,10 @@ if __name__ == '__main__':
     print(df.shape, len(df))
     print(df.columns)
     print(df.head())
+
+    county_size = df.groupby('county').size().compute()
+    print(county_size)
+
+
 
     print('all done')
