@@ -1,4 +1,4 @@
-FROM docker.io/jupyter/datascience-notebook
+FROM docker.io/jupyter/datascience-notebook:lab-3.2.5
 
 COPY setup/onnx_sandbox.yaml /tmp/
 
