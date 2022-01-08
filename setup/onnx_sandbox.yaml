@@ -5,7 +5,7 @@ channels:
   - conda-forge
 dependencies:
   - abseil-cpp=20210324.2=h23ab428_0
-  - arrow-cpp=4.0.1=py39hc058656_7_cpu
+  - arrow-cpp=6.0.1=py39hf938c1e_7_cpu
   - aws-c-cal=0.5.11=hd2e2f4b_0
   - aws-c-common=0.6.2=h9ed2024_0
   - aws-c-event-stream=0.2.7=hb9330a7_13
@@ -19,7 +19,7 @@ dependencies:
   - brotli=1.0.9=hb1e8313_2
   - brotlipy=0.7.0=py39h9ed2024_1003
   - bzip2=1.0.8=h1de35cc_0
-  - c-ares=1.17.1=h9ed2024_0
+  - c-ares=1.18.1=h0d85af4_0
   - ca-certificates=2021.10.26=hecd8cb5_2
   - certifi=2021.10.8=py39hecd8cb5_0
   - cffi=1.14.6=py39h2125817_0
@@ -40,7 +40,7 @@ dependencies:
   - gflags=2.2.2=h0a44026_0
   - giflib=5.2.1=haf1e3a3_0
   - glog=0.5.0=h23ab428_0
-  - grpc-cpp=1.39.0=hbd5ceb7_2
+  - grpc-cpp=1.42.0=h6da9ac5_1
   - heapdict=1.0.1=pyhd3eb1b0_0
   - icu=58.2=h0a44026_3
   - idna=3.3=pyhd3eb1b0_0
@@ -71,15 +71,16 @@ dependencies:
   - libnghttp2=1.46.0=ha29bfda_0
   - libopenblas=0.3.13=h7ddc91c_0
   - libpng=1.6.37=ha441bb4_0
-  - libprotobuf=3.16.0=hcf210ce_0
+  - libprotobuf=3.19.1=h8346a28_0
   - libsolv=0.7.19=hcf210ce_5
   - libssh2=1.9.0=ha12b0ac_1
-  - libthrift=0.14.2=h054ceb0_0
+  - libthrift=0.15.0=h054ceb0_0
   - libtiff=4.3.0=h1167814_1
-  - libutf8proc=2.6.1=h9ed2024_0
+  - libutf8proc=2.7.0=h0d85af4_0
   - libwebp=1.2.0=hacca55c_0
   - libwebp-base=1.2.0=h9ed2024_0
   - libxml2=2.9.12=hcdb78fc_0
+  - libzlib=1.2.11=h9173be1_1013
   - llvm-openmp=12.0.0=h0dcd299_1
   - locket=0.2.1=py39hecd8cb5_1
   - lz4-c=1.9.3=h23ab428_1
@@ -95,18 +96,20 @@ dependencies:
   - numpy=1.21.2=py39h0fa1045_0
   - numpy-base=1.21.2=py39hbbe2e76_0
   - olefile=0.46=pyhd3eb1b0_0
-  - onnx=1.10.1=py39hd47e038_0
+  - onnx=1.10.2=py39h3524ef9_2
   - onnxconverter-common=1.8.1=pyhd8ed1ab_0
+  - onnxruntime=1.10.0=py39hd5df51e_2
   - openssl=1.1.1l=h9ed2024_0
-  - orc=1.6.9=hfe4c36d_0
+  - orc=1.7.2=h84518c8_0
   - packaging=21.3=pyhd3eb1b0_0
   - pandas=1.3.5=py39h743cdd8_0
+  - parquet-cpp=1.5.1=h34088ae_4
   - partd=1.2.0=pyhd3eb1b0_0
   - pillow=8.4.0=py39h98e4679_0
   - pip=21.2.4=py39hecd8cb5_0
-  - protobuf=3.16.0=py39h9fcab8e_0
+  - protobuf=3.19.1=py39he9d5cce_0
   - psutil=5.8.0=py39h9ed2024_1
-  - pyarrow=4.0.1=py39hdf3e9eb_3
+  - pyarrow=6.0.1=py39h4d6536f_7_cpu
   - pybind11-abi=4=hd8ed1ab_3
   - pycosat=0.6.3=py39h9ed2024_0
   - pycparser=2.21=pyhd3eb1b0_0
@@ -115,10 +118,11 @@ dependencies:
   - pysocks=1.7.1=py39hecd8cb5_0
   - python=3.9.7=h88f2d9e_1
   - python-dateutil=2.8.2=pyhd3eb1b0_0
+  - python-flatbuffers=2.0=pyhd3eb1b0_0
   - python_abi=3.9=2_cp39
   - pytz=2021.3=pyhd3eb1b0_0
   - pyyaml=6.0=py39hca72f7f_1
-  - re2=2021.08.01=he49afe7_0
+  - re2=2021.11.01=he49afe7_0
   - readline=8.1=h9ed2024_0
   - reproc=14.2.3=h0d85af4_0
   - reproc-cpp=14.2.3=he49afe7_0
@@ -148,6 +152,6 @@ dependencies:
   - yaml=0.2.5=haf1e3a3_0
   - yaml-cpp=0.6.3=hb1e8313_4
   - zict=2.0.0=pyhd3eb1b0_0
-  - zlib=1.2.11=h4dc903c_4
-  - zstd=1.5.0=hcb37349_1
-
+  - zlib=1.2.11=h9173be1_1013
+  - zstd=1.5.1=h582d3a0_0
+prefix: /Users/jim/.conda/envs/onnx_sandbox
