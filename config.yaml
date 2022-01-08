@@ -4,7 +4,7 @@
 data_dir: /Users/jim/Desktop/onnx_sandbox/data
 
 # model storage directory
-model_dir: /Users/jim/Desktop/onnx_sandbox/models
+models_dir: /Users/jim/Desktop/onnx_sandbox/models
 
 # synthetic data setup parameters for make_regression()
 # total number records
