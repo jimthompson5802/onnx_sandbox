@@ -23,7 +23,7 @@ with open('./config.yaml', 'r') as f:
     config = yaml.safe_load(f)
 
 DATA_DIR = os.path.join(config['data_dir'], 'benchmark')
-MODELS_DIR = os.path.join(config['models_dir'], 'benchmark')
+MODELS_DIR = os.path.join(config['models_dir'], 'benchmark500')
 
 # set up models directory
 shutil.rmtree(MODELS_DIR, ignore_errors=True)
