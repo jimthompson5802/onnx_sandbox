@@ -19,7 +19,9 @@ ONNX = 'onnx'
 
 # helper function to get approximate im-memory size of RF model in MB
 # https://mljar.com/blog/random-forest-memory/
+# DEPRECATED - Keeping only for references purposes
 def rf_model_size_mb(model):
+    raise DeprecationWarning('DEPRECATED')
     with tempfile.TemporaryDirectory() as tmpdir:
         rf_file = os.path.join(tmpdir, "rf_model")
         joblib.dump(model, rf_file, compress=0)
@@ -29,7 +31,7 @@ def rf_model_size_mb(model):
 
 # another method for obtaining python object size
 # https://towardsdatascience.com/the-strange-size-of-python-objects-in-memory-ce87bdfbb97f
-def actualsize_mb(input_obj):
+def actualsize(input_obj):
     memory_size = 0
     ids = set()
     objects = [input_obj]
@@ -41,7 +43,10 @@ def actualsize_mb(input_obj):
                 memory_size += sys.getsizeof(obj)
                 new.append(obj)
         objects = gc.get_referents(*new)
-    return np.round(memory_size / 1024 / 1024, 4)
+    return memory_size
+
+def actualsize_mb(input_obj):
+    return np.round(actualsize(input_obj) / (1024 * 1024), 4)
 
 # get file size in MB
 def get_file_size_mb(fp: str) -> np.float:
