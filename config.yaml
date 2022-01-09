@@ -14,6 +14,10 @@ number_features: 20
 # number of informative explanatory variables
 number_informative: 14
 
+# Random Forest hyper-parameters
+# number of trees
+number_trees: 100
+
 # fraction for test set
 fraction_for_test: 0.2
 
