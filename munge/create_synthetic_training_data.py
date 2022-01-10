@@ -1,3 +1,4 @@
+import argparse
 import os
 import shutil
 import yaml
@@ -7,10 +8,17 @@ import numpy as np
 from sklearn.datasets import make_regression
 from sklearn.model_selection import train_test_split
 
+# get command line arguments
+parser = argparse.ArgumentParser(description='Train RF models for testing')
+parser.add_argument('--config', dest='config_file', action='store',
+                    required=True,
+                    help='benchmark configuration yaml file')
+
+args = parser.parse_args()
 
 #  get configuration
-with open('config.yaml', 'r') as f:
-    config  = yaml.safe_load(f)
+with open(args.config_file, 'r') as f:
+    config = yaml.safe_load(f)
 
 DATA_DIR = config['data_dir']
 NUMBER_RECORDS = config['number_records']
@@ -38,7 +46,7 @@ df = df.astype({f'X_{n:02}': 'float32' for n in range(NUMBER_FEATURES)})
 df = df.astype({'y': 'float32'})
 
 # setup up benchmark data directory
-benchmark_data_dir = os.path.join(DATA_DIR, 'benchmark')
+benchmark_data_dir = DATA_DIR
 shutil.rmtree(benchmark_data_dir, ignore_errors=True)
 os.makedirs(benchmark_data_dir, exist_ok=True)
 

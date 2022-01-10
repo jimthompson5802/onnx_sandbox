@@ -2,6 +2,7 @@
 # Generates RF models and saves them as pickle and onnx files to be used
 # in the scoring part of this benchmark.
 ###
+import argparse
 import os
 import shutil
 import yaml
@@ -18,12 +19,20 @@ from skl2onnx import convert_sklearn
 from skl2onnx.common.data_types import FloatTensorType
 
 
+# get command line arguments
+parser = argparse.ArgumentParser(description='Train RF models for testing')
+parser.add_argument('--config', dest='config_file', action='store',
+                    required=True,
+                    help='benchmark configuration yaml file')
+
+args = parser.parse_args()
+
 # retrieve configuration
-with open('./config.yaml', 'r') as f:
+with open(args.config_file, 'r') as f:
     config = yaml.safe_load(f)
 
-DATA_DIR = os.path.join(config['data_dir'], 'benchmark')
-MODELS_DIR = os.path.join(config['models_dir'], 'benchmark500')
+DATA_DIR = config['data_dir']
+MODELS_DIR = config['models_dir']
 
 # set up models directory
 shutil.rmtree(MODELS_DIR, ignore_errors=True)

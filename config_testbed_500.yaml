@@ -16,7 +16,7 @@ number_informative: 14
 
 # Random Forest hyper-parameters
 # number of trees
-number_trees: 100
+number_trees: 500
 
 # fraction for test set
 fraction_for_test: 0.2
