@@ -163,7 +163,6 @@ class BenchmarkDriver:
         with open(os.path.join(self.models_dir, county_id + '.pkl'), 'rb') as f:
             rf_pkl_model = pickle.load(f)
         self.runtime_metrics['model_load_time_ms'] = (time.perf_counter() - t0) * 1000
-        self.runtime_metrics['model_process_rss_mb'] = self.benchmark_process.memory_info().rss / (1024 * 1024)
         return rf_pkl_model
 
     def _retrieve_onnx_model(self, county_id: str) -> InferenceSession:
@@ -171,13 +170,13 @@ class BenchmarkDriver:
         t0 = time.perf_counter()
         sess = rt.InferenceSession(os.path.join(self.models_dir, county_id + '.onnx'))
         self.runtime_metrics['model_load_time_ms'] = (time.perf_counter() - t0) * 1000
-        self.runtime_metrics['model_process_rss_mb'] = self.benchmark_process.memory_info().rss / (1024 * 1024)
         return sess
 
     def _predict_sklearn_model(self, model, record: np.array) -> np.float:
         t0 = time.perf_counter()
         prediction = model.predict(record)
         self.runtime_metrics['model_score_time_ms'] = (time.perf_counter() - t0) * 1000
+        self.runtime_metrics['model_process_rss_mb'] = self.benchmark_process.memory_info().rss / (1024 * 1024)
         return prediction[0]
 
     def _predict_onnx_model(self, model, record: np.array) -> np.float:
@@ -186,4 +185,5 @@ class BenchmarkDriver:
         label_name = model.get_outputs()[0].name
         prediction = model.run([label_name], {input_name: record})[0]
         self.runtime_metrics['model_score_time_ms'] = (time.perf_counter() - t0) * 1000
+        self.runtime_metrics['model_process_rss_mb'] = self.benchmark_process.memory_info().rss / (1024 * 1024)
         return prediction[0, 0]
