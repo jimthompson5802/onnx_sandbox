@@ -147,6 +147,7 @@ dependencies:
   - python-flatbuffers=2.0=pyhd3eb1b0_0
   - python_abi=3.9=2_cp39
   - pytz=2021.3=pyhd3eb1b0_0
+  - pyyaml=6.0=py39hca72f7f_1
   - pyzmq=22.3.0=py39he9d5cce_2
   - re2=2021.11.01=he49afe7_0
   - readline=8.1=h9ed2024_0
