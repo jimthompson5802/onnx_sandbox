@@ -32,6 +32,7 @@ dependencies:
   - cython=0.29.25=py39he9d5cce_0
   - debugpy=1.5.1=py39he9d5cce_0
   - decorator=5.1.0=pyhd3eb1b0_0
+  - docutils=0.18.1=py39hecd8cb5_2
   - entrypoints=0.3=py39hecd8cb5_0
   - expat=2.4.1=h23ab428_2
   - fire=0.4.0=pyh44b312d_0
@@ -183,3 +184,4 @@ dependencies:
   - pip:
     - msgpack==1.0.2
     - py4j==0.10.7
+prefix: /Users/jim/.conda/envs/onnx_training
