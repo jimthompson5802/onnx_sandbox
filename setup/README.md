@@ -3,7 +3,11 @@
 Pre-requiste `conda`/`mamba` 
 
 ``` 
-mamba env create --file onnx_sandbox.yaml
+mamba env create --file onnx_training.yaml
+mamba env create --file onnx_scoring.yaml
 ```
 
-Note: `onnx_sandbox.yaml` is also used in building a docker image to run jupyter notebooks.  Some modifications are need to adapt the yaml specification from MacOS to Linux.  See `docker/Dockerfile` for details.
+Following build conda environments to support training sklearn model and saving in onnx format and to run onnx inference.  These are also used by Docker build to create jupyterlab images.
+
+* `onnx_training.yaml` conda environment to train and create onnx model.
+* `onnx_scoring.yaml` conda environment to do onnx inferencing (Does not contain any sklearn packages.)

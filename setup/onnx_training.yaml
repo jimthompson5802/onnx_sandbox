@@ -1,4 +1,4 @@
-name: onnx_sandbox
+name: onnx_training
 channels:
   - defaults
   - menpo
@@ -183,5 +183,5 @@ dependencies:
     - msgpack==1.0.2
     - pyspark==2.3.2
     - ruamel-yaml-conda==0.15.100
-prefix: /Users/jim/.conda/envs/onnx_sandbox
+prefix: /Users/jim/.conda/envs/onnx_training
 
