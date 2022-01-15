@@ -4,6 +4,7 @@ COPY setup/onnx_scoring.yaml /tmp/
 
 # remove OSX specific build specification and OSX specific modules to allow for linux build
 RUN  cat /tmp/onnx_scoring.yaml | sed -e "s/=[^0-9].*$//"  | sed -e '/^prefix/d' \
+    | sed -e 's/=12_osx.*$//' \
     | sed -e '/appnope/d' \
     | sed -e '/libgfortran/d' | sed -e '/llvm\-openmp/d' >/tmp/conda_env.yaml \
     && mamba env create --file /tmp/conda_env.yaml && rm /tmp/conda_env.yaml
@@ -12,6 +13,9 @@ RUN  cat /tmp/onnx_scoring.yaml | sed -e "s/=[^0-9].*$//"  | sed -e '/^prefix/d'
 # https://pythonspeed.com/articles/activate-conda-dockerfile/
 # https://github.com/conda/conda/issues/2682
 ## make availble as kernel
-#RUN conda run \
-#    && source ~/.bashrc \
-#    && conda activate onnx_sandbox && python -m ipykernel install --user --name onnx_sandbox
+#RUN echo "id is `id`"
+#RUN mamba list
+#RUN echo "mamba env list `mamba env list`"
+#RUN cat /home/jovyan/.bashrc
+#RUN conda init bash && source /home/jovyan/.bashrc && conda activate onnx_scoring
+#RUN python -m ipykernel install --user --name onnx_scoring
