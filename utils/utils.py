@@ -13,15 +13,6 @@ import pandas as pd
 from collections import Mapping, Container
 
 
-
-from sklearn.ensemble import RandomForestRegressor
-from onnxruntime import InferenceSession
-
-import onnxruntime as rt
-
-SKLEARN = 'sklearn'
-ONNX = 'onnx'
-
 # helper function to get approximate im-memory size of RF model in MB
 # https://mljar.com/blog/random-forest-memory/
 # DEPRECATED - Keeping only for references purposes
@@ -37,6 +28,7 @@ def rf_model_size_mb(model):
 # another method for obtaining python object size
 # https://towardsdatascience.com/the-strange-size-of-python-objects-in-memory-ce87bdfbb97f
 def actualsize(input_obj):
+    raise DeprecationWarning("DEPRECATED")
     memory_size = 0
     ids = set()
     objects = [input_obj]
@@ -102,88 +94,41 @@ def load_config(config_file):
         return yaml.safe_load(f)
 
 
-class BenchmarkDriver:
-    def __init__(
-            self,
-            model_type: str,
-            models_dir: str,
-            performance_fp: str,
-            test_scenario: str
-    ) -> None:
-        self.model_type = model_type
-        if model_type not in {SKLEARN, ONNX}:
-            raise ValueError(
-                f'model_type={model_type} invalid, should be "sklearn" or "onnx".'
-            )
-        self.models_dir = models_dir
-        self.performance_fp = performance_fp
-        self.performance_file_wrote_first_record = False
-        self.test_scenario = test_scenario
-
-        # performance metrics
-        self.runtime_metrics = {}
-        self.benchmark_process = psutil.Process(os.getpid())
-        # self.model_load_time = 0.0
-        # self.model_score_time = 0.0
-        # self.predicted_score = np.nan
-        # self.county_id = ''
-        # self.model_memory_size_mb = 0
-        # self.record_id = -1
-
-    def clear_stats(self):
-        self.runtime_metrics = {}
-
-    def write_performance_data(self):
-        perf_df = pd.DataFrame([self.runtime_metrics])
-        if self.performance_file_wrote_first_record:
-            perf_df.to_csv(self.performance_fp, header=False, index=False, mode='a')
-        else:
-            perf_df.to_csv(self.performance_fp, header=True, index=False)
-            self.performance_file_wrote_first_record = True
-
-    def score_one_record(self, county_id: str, record_id: int, record: np.array):
-        self.runtime_metrics['county_id'] = county_id
-        self.runtime_metrics['record_id'] = record_id
-        self.runtime_metrics['test_scenario'] = self.test_scenario
-        if self.model_type == SKLEARN:
-            model: RandomForestRegressor = self._retrieve_sklearn_model(county_id)
-            self.runtime_metrics['predicted_score'] = self._predict_sklearn_model(model, record)
-        else:
-            model: InferenceSession = self._retrieve_onnx_model(county_id)
-            self.runtime_metrics['predicted_score'] = self._predict_onnx_model(model, record)
-
-        # record performance
-        self.write_performance_data()
-        self.clear_stats()
-
-
-    def _retrieve_sklearn_model(self, county_id: str) -> RandomForestRegressor:
-        # retrieve model from persistent storage
-        t0 = time.perf_counter()
-        with open(os.path.join(self.models_dir, county_id + '.pkl'), 'rb') as f:
-            rf_pkl_model = pickle.load(f)
-        self.runtime_metrics['model_load_time_ms'] = (time.perf_counter() - t0) * 1000
-        return rf_pkl_model
-
-    def _retrieve_onnx_model(self, county_id: str) -> InferenceSession:
-        # retrieve model from file
-        t0 = time.perf_counter()
-        sess = rt.InferenceSession(os.path.join(self.models_dir, county_id + '.onnx'))
-        self.runtime_metrics['model_load_time_ms'] = (time.perf_counter() - t0) * 1000
-        return sess
-
-    def _predict_sklearn_model(self, model, record: np.array) -> np.float:
-        t0 = time.perf_counter()
-        prediction = model.predict(record)
-        self.runtime_metrics['model_score_time_ms'] = (time.perf_counter() - t0) * 1000
-        self.runtime_metrics['model_process_rss_mb'] = self.benchmark_process.memory_info().rss / (1024 * 1024)
-        return prediction[0]
-
-    def _predict_onnx_model(self, model, record: np.array) -> np.float:
-        t0 = time.perf_counter()
-        input_name = model.get_inputs()[0].name
-        label_name = model.get_outputs()[0].name
-        prediction = model.run([label_name], {input_name: record})[0]
-        self.runtime_metrics['model_score_time_ms'] = (time.perf_counter() - t0) * 1000
-        self.runtime_metrics['model_process_rss_mb'] = self.benchmark_process.memory_info().rss / (1024 * 1024)
-        return prediction[0, 0]
+    
+class TestDataSource:
+    def __init__(self):
+        self.dataset_columns = {}
+        self.combined_df = pd.DataFrame()
+    
+    @property
+    def list_of_counties(self):
+        return list(self.dataset_columns.keys())
+    
+    @property
+    def shape(self):
+        return self.combined_df.shape
+    
+    def add_dataset(self, fp):
+        df = pd.read_csv(fp)
+        county_id = os.path.basename(fp).split('.')[0]
+        self.dataset_columns[county_id] = list(df.columns)
+        df['county_id'] = county_id
+        self.combined_df = pd.concat([self.combined_df,df])
+        
+        # pull out data set to make sure it matches the orginal
+        df2 = self.extract_county_dataset(county_id)
+        print(df.drop(['county_id'], axis=1).shape, df2.shape)
+        assert df.drop(['county_id'], axis=1).shape == df2.shape
+        assert np.all(df.drop(['county_id'], axis=1) == df2)
+        
+    def extract_county_dataset(self, county_id):
+        return self.combined_df[self.combined_df['county_id'] == county_id][self.dataset_columns[county_id]].copy(deep=True)
+    
+    def scramble_dataset(self, random_seed = 123):
+        self.combined_df = self.combined_df.sample(frac=1.0, random_state=random_seed)
+        
+    def get_record_by_row_number(self, row_number):
+        row = self.combined_df.iloc[row_number]
+        county_id = row.county_id
+        row = pd.DataFrame(row).T
+        return row[['county_id'] + self.dataset_columns[county_id]]
