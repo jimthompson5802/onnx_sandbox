@@ -174,4 +174,4 @@ dependencies:
   - zipp=3.6.0=pyhd3eb1b0_0
   - zlib=1.2.11=h9173be1_1013
   - zstd=1.5.1=h582d3a0_0
-prefix: /Users/jim/.conda/envs/onnx_scoring
+

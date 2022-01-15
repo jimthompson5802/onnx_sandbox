@@ -1,5 +1,8 @@
 FROM docker.io/jupyter/datascience-notebook:lab-3.2.5
 
+# setup for conda work
+COPY docker/dot_condarc /home/jovyan/.condarc
+
 COPY setup/onnx_training.yaml /tmp/
 # remove OSX specific build specification and OSX specific modules to allow for linux build
 RUN  cat /tmp/onnx_training.yaml | sed -e "s/=[^0-9].*$//"  | sed -e '/^prefix/d' \
