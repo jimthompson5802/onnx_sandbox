@@ -8,3 +8,5 @@ dask-worker-space
 performance_data
 *.onnx
 *.pkl
+*.dot
+*.dot.png
