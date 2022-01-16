@@ -1,6 +1,6 @@
 # ONNX Experiment Sandbox
 
-File `config.yaml` contains benchmark setup configuration parameters
+File `config*.yaml` contains benchmark setup configuration parameters
 
 |Directory|Description|
 |--------|-----------|
