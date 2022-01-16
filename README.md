@@ -6,6 +6,7 @@ File `config*.yaml` contains benchmark setup configuration parameters
 |--------|-----------|
 |analysis|Analysis artifacts|
 |benchmark|Code for model training and benchmark models runs|
+|custom_onnx|Prototype code for creating a custom onnx sklearn model.|
 |docker|Docker images used|
 |data|training and testing datasets and benchmark run-time data|
 |models|Contains trained model objects|
