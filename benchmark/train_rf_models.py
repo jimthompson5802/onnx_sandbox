@@ -7,7 +7,6 @@ import os
 import shutil
 import yaml
 import pickle
-from multiprocessing import freeze_support
 from typing import Dict
 
 import pandas as pd
@@ -17,6 +16,11 @@ from dask.distributed import LocalCluster, Client
 from sklearn.ensemble import RandomForestRegressor
 from skl2onnx import convert_sklearn
 from skl2onnx.common.data_types import FloatTensorType
+
+# this dummy import needed for work-around re: this issue
+# https://github.com/dask/distributed/issues/4168
+# apparently there is a Python 3.9 and dask incompatibility
+import multiprocessing.dummy
 
 
 # get command line arguments
@@ -50,7 +54,7 @@ def train_a_model(county_id: str) -> Dict:
 
         rf = RandomForestRegressor(
             n_estimators=config['number_trees'],
-            n_jobs=4,
+            n_jobs=2,
             random_state=config['random_seed']
         )
         rf.fit(X, y)
@@ -76,7 +80,6 @@ def train_a_model(county_id: str) -> Dict:
 
 
 if __name__ == '__main__':
-    freeze_support()
 
     # get list of counties from training data set
     df = pd.read_parquet(os.path.join(DATA_DIR, 'train.parquet'))
