@@ -17,10 +17,7 @@ from skl2onnx.algebra.onnx_ops import OnnxAdd, OnnxMul, OnnxReduceSum
 
 import onnxruntime as rt
 
-
-# ## Custom Class Defintion
-
-
+# setup RF Sklearn model
 rf = RandomForestRegressor(
     n_estimators=8,
     random_state=13
