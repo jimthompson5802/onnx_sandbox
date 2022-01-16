@@ -21,6 +21,7 @@ from skl2onnx.common.data_types import guess_numpy_type
 from skl2onnx.algebra.onnx_ops import OnnxAdd, OnnxMul, OnnxReduceSum
 
 import onnxruntime as rt
+from mlprodict.onnxrt import OnnxInference
 
 
 # ## Custom Class Defintion
@@ -125,6 +126,24 @@ prediction = prediction.reshape(-1,)
 print(prediction.shape)
 print('restored model', np.max(np.abs(test_df['y'] - prediction)))
 
+# explore model execution graph
+oinf = OnnxInference(onnx_model)
+
+print(">>>inputs:")
+for k  in oinf.graph_['inputs']:
+    print(k, oinf.graph_['inputs'][k])
+
+print(">>>> outputs:")
+for k in oinf.graph_['outputs']:
+    print(k, oinf.graph_['outputs'][k])
+
+print(">>> graph nodes:")
+for k in oinf.graph_['nodes']:
+    print(k, oinf.graph_['nodes'][k])
+
+print(">>>> sequence:")
+for s in oinf.graph_['sequence']:
+    print(s)
 print('all done')
 
 
