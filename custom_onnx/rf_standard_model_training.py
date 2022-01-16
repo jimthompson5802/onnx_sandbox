@@ -1,12 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # Setup toy sklearn custom image
-# 
-# Simple linear model $y = 2*x1 + 4*x2 + 1$
-
-# In[1]:
-
 
 from sklearn.base import BaseEstimator, RegressorMixin
 from sklearn.ensemble import RandomForestRegressor
