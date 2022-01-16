@@ -7,6 +7,7 @@ tag=${1:-v1}
 # note: 2nd -v required for consistency of directory location for models and data
 docker run -it --rm \
   -p 8888:8888 \
+  -p 8787:8787 \
   -v $PWD:/home/jovyan/project \
   -v $PWD:/Users/jim/Desktop/onnx_sandbox \
   dsimages/${docker_repository}:${tag} \
