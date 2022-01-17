@@ -149,6 +149,10 @@ prediction = prediction.reshape(-1,)
 print(prediction.shape)
 print('restored onnx model', np.max(np.abs(test_df['y'] - prediction)))
 
+# run predictions again
+prediction = sess.run([label_name], {'float_input': test_df.drop(['y'], axis=1).to_numpy().astype(np.float32)})[0]
+print(f'\n2nd onnx model prediction: {prediction.shape}\n {prediction} ')
+
 print('all done')
 
 
