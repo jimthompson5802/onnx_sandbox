@@ -123,6 +123,7 @@ dependencies:
   - olefile=0.46=pyhd3eb1b0_0
   - onnx=1.10.2=py39h3524ef9_2
   - onnxconverter-common=1.8.1=pyhd8ed1ab_0
+  - onnxmltools=1.10.0=pyhd8ed1ab_0
   - onnxruntime=1.10.0=py39hd5df51e_2
   - openssl=1.1.1m=hca72f7f_0
   - orc=1.7.2=h84518c8_0
