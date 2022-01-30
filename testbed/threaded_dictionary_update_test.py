@@ -3,7 +3,6 @@
 
 import time
 from threading import Thread
-from functools import reduce
 
 
 def add_to_counter(ctr):
