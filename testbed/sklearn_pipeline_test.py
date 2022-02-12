@@ -62,9 +62,8 @@ def main():
         ]
     )
 
-    pipe1.fit_transform(train_df)
-
-    print(pipe1.transform(test_df)[:10])
+    pipe1.fit(train_df)
+    y_hat1 = pipe1.transform(test_df)
 
     pipe2 = Pipeline(
         steps=[
@@ -72,10 +71,11 @@ def main():
         ]
     )
 
-    columns_to_use = ['X00', 'X01', 'X02']
+    columns_to_use2 = ['X00', 'X01', 'X02']
     pipe2.fit(train_df[columns_to_use])
-    print(pipe2.transform(test_df[columns_to_use])[:10])
+    y_hat2 = pipe2.transform(test_df[columns_to_use])
 
+    print(np.all(y_hat1 == y_hat2))
 
 if __name__ == '__main__':
     main()
