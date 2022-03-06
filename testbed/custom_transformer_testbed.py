@@ -100,7 +100,10 @@ class DFNearbyImputer(BaseEstimator, TransformerMixin):
                 ]
             )
 
-        return df
+        if self.keep_groupby:
+            return df
+        else:
+            return df.drop([self.groupby], axis=1)
 
 def main():
     X, _ = make_regression(n_samples=N_SAMPLES, n_features=N_FEATURES, random_state=123)
@@ -122,7 +125,8 @@ def main():
     print(df.dtypes)
     print(df)
 
-    pipe = make_pipeline(DFNearbyImputer(strategy='median', fill_value=0,  groupby='ctract', add_indicator=True))
+    pipe = make_pipeline(DFNearbyImputer(strategy='median', fill_value=0,  groupby='ctract',
+                                         add_indicator=True))
     print(pipe.fit_transform(df))
     print(pipe.transform(df).dtypes)
     print(f"NEARBY:\n{pipe['dfnearbyimputer'].nearby_imputed_values_}")
