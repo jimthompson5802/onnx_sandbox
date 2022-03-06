@@ -125,8 +125,8 @@ def main():
     print(df.dtypes)
     print(df)
 
-    pipe = make_pipeline(DFNearbyImputer(strategy='median', fill_value=0,  groupby='ctract',
-                                         add_indicator=True))
+    pipe = make_pipeline(DFNearbyImputer(strategy='constant', fill_value=0,  groupby='ctract',
+                                         add_indicator=True, keep_groupby=False))
     print(pipe.fit_transform(df))
     print(pipe.transform(df).dtypes)
     print(f"NEARBY:\n{pipe['dfnearbyimputer'].nearby_imputed_values_}")
