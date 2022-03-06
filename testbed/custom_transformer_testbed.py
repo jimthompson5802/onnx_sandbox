@@ -60,14 +60,25 @@ class DFNearbyImputer(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X:pd.DataFrame) -> pd.DataFrame:
-        df = X.drop([self.groupby], axis=1).copy()
-        for col in df.columns:
+        df = X.copy()
+        for col in df.drop([self.groupby], axis=1).columns:
             for group in X[self.groupby].unique():
                 mask = (X[col].notna()) | (X[self.groupby] != group)
                 try:
+                    # get summary statistic for "nearby" observations
                     df.loc[:, col] = df.loc[:, col].where(mask, other=self.nearby_imputed_values_.loc[group, col])
                 except KeyError:
+                    # if no summary statistic exists for the "neraby" location, use overall summary stats
                     df.loc[:, col] = df.loc[:, col].where(mask, other=self.overall_imputed_values_.loc[col])
+        if self.add_indicator:
+            missing_indicator = X.drop([self.groupby], axis=1).isna()
+            df = pd.DataFrame(
+                np.concatenate([df, np.int8(missing_indicator)], axis=1),
+                columns=[
+                    df.columns.to_list() + [f"j{c}" for c in df.drop([self.groupby], axis=1).columns]
+                ]
+            )
+
         return df
 
 def main():
@@ -90,9 +101,9 @@ def main():
     print(df.dtypes)
     print(df)
 
-    pipe = make_pipeline(DFNearbyImputer(strategy='median', groupby='ctract'))
-
+    pipe = make_pipeline(DFNearbyImputer(strategy='median', groupby='ctract', add_indicator=True))
     print(pipe.fit_transform(df))
+    print(pipe.transform(df).dtypes)
 
     # add unknown ctract to data
     df_test = pd.concat(
@@ -103,7 +114,9 @@ def main():
         ignore_index=True
     )
     print(df_test)
+    print(df_test.dtypes)
     print(pipe.transform(df_test))
+    print(pipe.transform(df_test).dtypes)
 
     print('all done')
 
