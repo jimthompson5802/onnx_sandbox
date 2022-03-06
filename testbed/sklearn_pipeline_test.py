@@ -37,11 +37,21 @@ class ScoringOnlyRegressor(BaseEstimator):
 
 
 def main():
+    pd.set_option("display.width", 120)
+    pd.set_option('display.max_columns', 10)
+    pd.set_option('display.precision', 4)
+
     # create synthetic data for training and test
     X, y = make_regression(n_samples=N_SAMPLES, n_features=N_FEATURES, n_informative=8, random_state=123)
+    X_cat1 = np.random.choice(['a', 'b', 'c'], size=N_SAMPLES, replace=True)
+    X_cat2 = np.random.choice(['w', 'x', 'y', 'z'], size=N_SAMPLES)
 
-    df = pd.DataFrame(np.concatenate([X, y.reshape(-1, 1)], axis=1))
-    df.columns = [f'X{i:02d}' for i in range(N_FEATURES)] + ['y']
+
+    df = pd.DataFrame(
+        np.concatenate([X, X_cat1.reshape(-1, 1), X_cat2.reshape(-1, 1), y.reshape(-1, 1)], axis=1)
+    )
+    df.columns = [f'X{i:02d}' for i in range(N_FEATURES)] + ['XC1', 'XC2', 'y']
+    print(df.head())
 
 
     train_df, test_df = train_test_split(df, test_size=0.2)
