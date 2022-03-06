@@ -29,11 +29,12 @@ class DFSimpleImputer(SimpleImputer):
 
 class DFNearbyImputer(BaseEstimator, TransformerMixin):
     def __init__(self, strategy:str='median', fill_value:float=None, add_indicator:bool=False,
-                 groupby:str=None) -> None:
+                 groupby:str=None, keep_groupby:bool=False) -> None:
         self.strategy = strategy
         self.fill_value = fill_value
         self.add_indicator = add_indicator
         self.groupby = groupby
+        self.keep_groupby = keep_groupby
         self.feature_names_in_ = None
         self.nearby_imputed_values_ = None
         self.overall_imputed_values_ = None
